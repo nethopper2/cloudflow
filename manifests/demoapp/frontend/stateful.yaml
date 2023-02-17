@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet 
+metadata:
+  labels:
+    app: backend-v1
+  name: backend-v1
+  namespace: default
+  annotations:
+    nethopper.io/tag-core: 'true'
+spec:
+  revisionHistoryLimit: 10
+  serviceName: temp-backend
+  selector:
+    matchLabels:
+      app: backend-v1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backend-v1
+    spec:
+      containers:
+      - image: cmunford73/backend:latest
+        imagePullPolicy: Always
+        name: backend
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
