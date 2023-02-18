@@ -25,7 +25,7 @@ terraform {
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_name = "xplane-tf-eks-demo-${random_string.suffix.result}"
+  cluster_name = "cloudflow-${var.cluster-name-suffix}"
 }
 
 resource "random_string" "suffix" {
