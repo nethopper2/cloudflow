@@ -98,3 +98,4 @@ The following table the IaC TF modules contained in this repo.
 <!-- test for chris9 -->
 <!-- test for chris10 -->
 <!-- test for chris11 -->
+<!-- test for chris12 -->
