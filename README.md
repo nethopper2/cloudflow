@@ -58,3 +58,4 @@ The following table the IaC TF modules contained in this repo.
 - peter 9
 - peter 10
 - peter 11
+- peter 12
