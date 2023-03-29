@@ -44,18 +44,9 @@ The following table the IaC TF modules contained in this repo.
 
 | DIRECTORY | DESCRIPTION | KAOPS (repo) WORKSPACE |
 | :--- | :--- | :--- |
-| eks-aws | TF modules required to build an EKS cluster in AWS | kaops/iac/xplane/tf-workspace/eks-aws |
+| aws/eks-aws | TF modules required to build an EKS cluster in AWS | kaops/iac/xplane/tf-workspace/aws/eks-aws |
+| aws/vpc-aws | TF modules required to build a VPC AWS | kaops/iac/xplane/tf-workspace/aws/vpc-aws |
+| azure/aks | TF modules required to build an AKS cluster in Azure | kaops/iac/xplane/tf-workspace/azure/aks |
 
 ### ADD YOUR EDITS HERE TO TRIGGER WORKFLOWS!
 - 1 peter did it first
-- peter 2
-- peter 3
-- peter 4
-- peter 5
-- peter 6
-- peter 7
-- peter 8
-- peter 9
-- peter 10
-- peter 11
-- peter 12
