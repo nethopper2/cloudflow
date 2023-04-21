@@ -17,7 +17,7 @@ provider "kubernetes" {
 terraform {
   backend "kubernetes" {
     secret_suffix     = "providerconfig-default"
-    namespace         = "devops-admin"
+    namespace         = "nethopper"
     in_cluster_config = true
   }
 }
