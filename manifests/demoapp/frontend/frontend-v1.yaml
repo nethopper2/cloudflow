@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: nethopper/demoapp:gms
+          image: nethopper/demoapp-gms:1.0.2
           envFrom:
             - configMapRef:
                 name: cluster-config
