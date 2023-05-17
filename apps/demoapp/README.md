@@ -28,6 +28,7 @@ Run an end to end test using 2 Kubernetes clusters
 # Docker Build Process
 - Build a docker container
   - sudo usermod -aG docker $USER
+  - sudo docker login
   - sudo npm run build
   - NOTE: this will create a container, and upload it to nethopper's dockerhub.
   
