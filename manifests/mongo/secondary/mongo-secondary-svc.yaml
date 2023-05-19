@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-sec
+  labels:
+    app: mongo-sec
+    service: mongo-sec
+spec:
+  ports:
+    - port: 27017
+      name: http
+  selector:
+    application: mongo-sec
