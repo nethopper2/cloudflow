@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-sec
+  labels:
+    application: mongo-sec
+  annotations:
+    nethopper.io/tag-de: 'true'
+spec:
+  selector:
+    matchLabels:
+      application: mongo-sec
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        application: mongo-sec
+    spec:
+      containers:
+        - command:
+            - mongod
+            - '--replSet'
+            - rs0
+            - '--bind_ip'
+            - '*'
+          image: mongo:5.0
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          imagePullPolicy: Always
+          name: mongo-sec
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongodb-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - emptyDir: {}
+          name: mongodb-data
