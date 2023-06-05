@@ -5,7 +5,7 @@
 # You should **not** schedule deployments and services in this workspace. This keeps workspaces modular (one for provision EKS, another for scheduling Kubernetes resources) as per best practices.
 provider "aws" {
   region = var.region
-  shared_credentials_files = "aws-creds.ini"
+  shared_credentials_files = ["aws-creds.ini"]
 }
 
 provider "kubernetes" {
