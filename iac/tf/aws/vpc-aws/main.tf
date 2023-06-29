@@ -7,7 +7,7 @@ provider "aws" {
 terraform {
   backend "kubernetes" {
     secret_suffix     = "providerconfig-default"
-    namespace         = "nethopper"
+    namespace         = "default"
     in_cluster_config = true
   }
 }
