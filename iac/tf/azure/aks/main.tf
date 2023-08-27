@@ -5,6 +5,18 @@ variable "client_secret" {
   default = "abcde"
 }
 
+variable "region" {
+  type = string
+  description = "Azure region"
+  default = "eastus"
+}
+
+variable "cluster-name-suffix" {
+  description = "Cluster name suffix"
+  type        = string
+  default     = "aks"
+}
+
 terraform {
   required_providers {
     azurerm = {
@@ -40,10 +52,10 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_kubernetes_cluster" "example" {
-  name                = "cloudflow-aks1"
+  name                = "cloudflow-${var.cluster-name-suffix}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = "cloudflowaks1"
+  dns_prefix          = "cloudflow${var.cluster-name-suffix}"
 
   default_node_pool {
     name       = "default"
