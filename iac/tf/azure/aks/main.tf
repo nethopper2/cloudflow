@@ -47,7 +47,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-cloudflow-aks"
+  name     = "rg-cloudflow-aks-${var.cluster-name-suffix}"
   location = var.region
 }
 
