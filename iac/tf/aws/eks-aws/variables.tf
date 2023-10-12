@@ -9,3 +9,10 @@ variable "cluster-name-suffix" {
   type        = string
   default     = "eks"
 }
+
+variable "k8s-version" {
+  description = "Kubernetes version"
+  type        = string
+  default     = "1.24"
+}
+
