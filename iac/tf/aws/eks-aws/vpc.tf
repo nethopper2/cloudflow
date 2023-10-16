@@ -16,7 +16,6 @@ module "vpc" {
   map_public_ip_on_launch = true
   
   public_subnet_tags = {
-    Name                                          = "public-subnet-${var.cluster-name-suffix}"
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/elb"                      = 1
   }
