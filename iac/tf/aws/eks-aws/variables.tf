@@ -13,6 +13,6 @@ variable "cluster-name-suffix" {
 variable "k8s-version" {
   description = "Kubernetes version"
   type        = string
-  default     = "1.24"
+  default     = "1.28"
 }
 
