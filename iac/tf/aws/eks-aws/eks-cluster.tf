@@ -21,10 +21,10 @@ module "eks" {
     one = {
       name = "node-group-1"
 
-      instance_types = ["t3.medium"]
+      instance_types = ["t3.2xlarge"]
 
       min_size     = 2
-      max_size     = 2
+      max_size     = 4
       desired_size = 2
 
       pre_bootstrap_user_data = <<-EOT
