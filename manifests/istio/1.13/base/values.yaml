@@ -27,3 +27,4 @@ base:
   enableIstioConfigCRDs: true
 
 defaultRevision: "1.13"
+profile: "demo"
