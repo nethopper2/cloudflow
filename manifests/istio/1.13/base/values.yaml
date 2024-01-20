@@ -26,5 +26,5 @@ base:
   # For istioctl usage to disable istio config crds in base
   enableIstioConfigCRDs: true
 
-defaultRevision: "1.13"
+defaultRevision: "default"
 profile: "demo"
