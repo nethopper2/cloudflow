@@ -24,6 +24,9 @@ kind: ConfigMap`
 #Created KAOPS apps for the *crds* and *deploy* folders. Set deploy app namespace to *spinnaker-operator* and enable auto-create namespace when creating the app in KAOPS.
 
 #Then, wait until the apps above are fully deployed (ie green).  
+
+# Spinnaker Installation
+
 #Then Create KAOPS apps for the *spin-deploy* folder.  Set namespace to default, and enable auto-create namespace.
 
 #Then, wait for the 7 pods to fully deploy in the spinnaker namespace.
