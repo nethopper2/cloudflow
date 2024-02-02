@@ -1,0 +1,314 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spin-sa
+  namespace: spinnaker
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: spin-cluster-role
+rules:
+- apiGroups:
+  - extensions
+  resources:
+  - ingresses
+  - ingresses/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  - ingresses/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - services/finalizers
+  - events
+  - configmaps
+  - secrets
+  - namespaces
+  - jobs
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - watch
+  - patch
+  - delete
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - watch
+  - patch
+- apiGroups:
+  - apps
+  - extensions
+  resources:
+  - deployments
+  - deployments/finalizers
+  - deployments/scale
+  - daemonsets
+  - replicasets
+  - statefulsets
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - watch
+  - patch
+  - delete
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - servicemonitors
+  verbs:
+  - get
+  - create
+- apiGroups:
+  - spinnaker.armory.io
+  resources:
+  - '*'
+  - spinnakerservices
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - watch
+  - patch
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - validatingwebhookconfigurations
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: spin-cluster-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: spin-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: spin-sa
+  namespace: spinnaker
+---
+apiVersion: v1
+data:
+  minioAccessKey: U2FtcGxlQWNjZXNzS2V5MSE=
+kind: Secret
+metadata:
+  name: minio-secret-key
+  namespace: spinnaker
+type: Opaque
+---
+apiVersion: v1
+data: {}
+kind: Secret
+metadata:
+  annotations:
+    kubernetes.io/service-account.name: spin-sa
+  name: spin-sa-token-g4f44h95ck
+  namespace: spinnaker
+type: kubernetes.io/service-account-token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: spinnaker
+spec:
+  ports:
+  - port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: minio
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: minio
+  name: minio-pvc
+  namespace: spinnaker
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio
+  namespace: spinnaker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  serviceName: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - mkdir -p /storage/spinnaker && /usr/bin/minio server /storage
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: minio
+        - name: MINIO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              key: minioAccessKey
+              name: minio-secret-key
+        image: minio/minio:RELEASE.2021-08-20T18-32-01Z
+        name: minio
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - mountPath: /storage
+          name: storage
+      securityContext:
+        fsGroup: 65535
+        runAsGroup: 65535
+        runAsUser: 1000
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: minio-pvc
+---
+apiVersion: spinnaker.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+  namespace: spinnaker
+spec:
+  expose: {}
+  kustomize:
+    clouddriver: {}
+    deck: {}
+    echo: {}
+    front50: {}
+    gate: {}
+    igor: {}
+    orca: {}
+    rosco: {}
+  spinnakerConfig:
+    config:
+      artifacts: {}
+      canary: {}
+      ci: {}
+      deploymentEnvironment: {}
+      features: {}
+      metricStores: {}
+      notifications: {}
+      persistentStorage:
+        persistentStoreType: s3
+        s3:
+          accessKeyId: minio
+          bucket: spinnaker
+          endpoint: http://minio:9000
+          pathStyleAccess: true
+          region: us-west-2
+          rootFolder: front50
+          secretAccessKey: encrypted:k8s!n:minio-secret-key!k:minioAccessKey
+      providers:
+        kubernetes:
+          accounts:
+          - cacheThreads: 1
+            cachingPolicies: []
+            checkPermissionsOnStartup: true
+            customResources: []
+            dockerRegistries: []
+            kinds: []
+            liveManifestCalls: false
+            name: spinnaker
+            namespaces: []
+            oAuthScopes: []
+            omitKinds: []
+            omitNamespaces: []
+            onlySpinnakerManaged: false
+            permissions: {}
+            providerVersion: V2
+            serviceAccount: true
+          enabled: true
+          primaryAccount: spinnaker
+      pubsub: {}
+      repository: {}
+      security: {}
+      spinnaker: {}
+      version: 1.29.2
+    profiles:
+      clouddriver: {}
+      echo: {}
+      front50: {}
+      gate: {}
+      igor: {}
+      orca: {}
+      rosco: {}
+      settings-local.js: {}
+      spinnaker: {}
+      spinnakerconfig: {}
+    service-settings:
+      clouddriver:
+        kubernetes:
+          serviceAccountName: spin-sa
+      echo: {}
+      front50: {}
+      gate: {}
+      igor: {}
+      orca: {}
+      rosco: {}
+      spinnaker: {}
+  validation:
+    providers:
+      kubernetes:
+        enabled: true
