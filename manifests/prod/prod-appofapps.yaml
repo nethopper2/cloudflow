@@ -1,10 +1,13 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: guestbook
-  namespace: nethopper
+  name: guestbook1
+  namespace: default
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
@@ -13,4 +16,22 @@ spec:
     path: guestbook
   destination:
     server: https://kubernetes.default.svc
-    namespace: guestbook
+    namespace: default
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook2
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    targetRevision: HEAD
+    path: guestbook
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
