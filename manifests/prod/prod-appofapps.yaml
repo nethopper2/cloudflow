@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: guestbook1
-  namespace: default
+  namespace: nethopper
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -25,7 +25,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: guestbook2
+  name: frontend1
   namespace: nethopper
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -38,9 +38,9 @@ spec:
       selfHeal: true
   project: default
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/nethopper2/cloudflow.git
     targetRevision: HEAD
-    path: guestbook
+    path: manifests/demoapp/frontend
   destination:
     server: https://kubernetes.default.svc
     namespace: default
