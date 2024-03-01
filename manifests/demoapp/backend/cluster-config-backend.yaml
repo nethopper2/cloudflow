@@ -1,6 +1,0 @@
-apiVersion: v1
-data:
-  MYCLUSTERNAME: Backend
-kind: ConfigMap
-metadata:
-  name: cluster-config
