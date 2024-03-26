@@ -21,11 +21,11 @@ module "eks" {
     one = {
       name = "node-group-1"
 
-      instance_types = ["t3.2xlarge"]
+      instance_types = ["t3.large"]
 
-      min_size     = 2
-      max_size     = 4
-      desired_size = 2
+      min_size     = 1 
+      max_size     = 1
+      desired_size = 1
 
       pre_bootstrap_user_data = <<-EOT
       echo 'foo bar'
