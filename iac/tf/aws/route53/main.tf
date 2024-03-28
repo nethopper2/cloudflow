@@ -5,7 +5,7 @@ provider "aws" {
   region = var.region
   
   # in-cluster tf (e.g. crossplane)
-  shared_credentials_files = ["aws-creds.ini"]
+  shared_credentials_file = "aws-creds.ini"
 
   # local tf
   #shared_credentials_files = ["/home/ddonahue/.aws/credentials"]
