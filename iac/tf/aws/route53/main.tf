@@ -47,7 +47,7 @@ resource "aws_route53_record" "primary-A" {
   ttl     = 10
  
   weighted_routing_policy {
-    weight = 50
+    weight = var.primary-weight
   }
  
   set_identifier = "primary" 
@@ -64,7 +64,7 @@ resource "aws_route53_record" "canary-A" {
   ttl     = 10
  
   weighted_routing_policy {
-    weight = 0
+    weight = var.canary-weight
   }
  
   set_identifier = "canary" 
