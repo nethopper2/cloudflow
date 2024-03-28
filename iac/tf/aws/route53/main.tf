@@ -2,7 +2,7 @@
 # # change the xxxx below, and then terraform apply to make the switch
 
 provider "aws" {
-  region = var.region
+  region = "us-east-2"
   
   # in-cluster tf (e.g. crossplane)
   shared_credentials_files = ["aws-creds.ini"]
@@ -42,16 +42,16 @@ terraform {
 # 
 resource "aws_route53_record" "primary-A" {
   zone_id = "Z0099474UE6G1A66LZAQ"
-  name    = var.active-url 
+  name    = "*.prod.mynethopper.net"
   type    = "A"
-  ttl     = var.primary-ttl
+  ttl     = 10
  
   weighted_routing_policy {
-    weight = var.primary-weight
+    weight = 50
   }
  
-  set_identifier = var.primary-name 
-  records        = [var.primary-ipv4]
+  set_identifier = "primary" 
+  records        = ["212.75.106.21"]
 }
 
 #
@@ -59,14 +59,14 @@ resource "aws_route53_record" "primary-A" {
 #
 resource "aws_route53_record" "canary-A" {
   zone_id = "Z0099474UE6G1A66LZAQ"
-  name    = var.active-url 
+  name    = "*.prod.mynethopper.net"
   type    = "A"
-  ttl     = var.canary-ttl
+  ttl     = 10
  
   weighted_routing_policy {
-    weight = var.canary-weight
+    weight = 0
   }
  
-  set_identifier = var.canary-name 
-  records        = [var.canary-ipv4]
+  set_identifier = "canary" 
+  records        = ["212.75.106.22"]
 }
