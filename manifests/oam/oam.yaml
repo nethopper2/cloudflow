@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oam 
+  labels:
+    app: oam
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ubuntu1
+  template:
+    metadata:
+      name: ubuntu1
+      labels:
+        app: ubuntu1
+    spec:
+      containers:
+      - image: ubuntu
+        command:
+          - "sleep"
+          - "604800"
+        imagePullPolicy: IfNotPresent
+        name: ubuntu
+      restartPolicy: Always
