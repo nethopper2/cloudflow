@@ -29,10 +29,11 @@ kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-ser
 
   NOTE: pod IP address is 172.17.0.11
   
+  ```
   $curl http://172.17.0.11:2112/metrics | grep ping
   ping_service_error_cnt 7
   ping_service_success_cnt 284
-
+  ```
 ## Other URLs
   - Add csv URLs to env.value in ping-service.yaml to test other URLs
 
