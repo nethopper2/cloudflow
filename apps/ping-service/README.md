@@ -5,8 +5,11 @@ docker build -t nethopper/ping-service .
 
 docker push nethopper/ping-service:latest
 
-## unit test
+## unit test in docker
 docker run --rm --env PING_URLS=https://google.com nethopper/ping-service
+
+## unit test in k8s
+kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-service.yaml
 
 # Demo
   - Deploy ping-service and tail pod logs
@@ -15,5 +18,8 @@ docker run --rm --env PING_URLS=https://google.com nethopper/ping-service
   - Observe successful ping of frontend svc
 
 ## Other URLs
-  - Add csv URLs to env.value in ping-service.yaml to test other URLs 
+  - Add csv URLs to env.value in ping-service.yaml to test other URLs
+
+# Misc
+  - prometheus-service.yaml moved to cloudflow/manifests/ping-service/ping-service.yaml
 
