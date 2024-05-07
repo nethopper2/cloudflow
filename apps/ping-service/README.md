@@ -6,6 +6,7 @@ Default test URL in application manifest is for the frontend service (cloudflow/
 
 # Build
 docker build -t nethopper/ping-service .
+
 docker push nethopper/ping-service:latest
 
 ## unit test in docker
