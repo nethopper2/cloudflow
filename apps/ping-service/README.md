@@ -5,7 +5,7 @@ docker build -t nethopper/ping-service .
 
 docker push nethopper/ping-service:latest
 
-### unit test
+## unit test
 docker run --rm --env PING_URLS=https://google.com nethopper/ping-service
 
 # Demo
@@ -14,6 +14,6 @@ docker run --rm --env PING_URLS=https://google.com nethopper/ping-service
   - Deploy https://github.com/nethopper2/cloudflow/tree/master/manifests/demoapp/frontend
   - Observe successful ping of frontend svc
 
-### Other URLs
+## Other URLs
   - Add csv URLs to env.value in ping-service.yaml to test other URLs 
 
