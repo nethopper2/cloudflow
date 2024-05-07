@@ -22,10 +22,20 @@ kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-ser
   - tail pod logs
   - Observe successes/errors pinging frontend service
 
-## view in prometheus
+## view in prometheus (in-cluster)
   - There are two metrics exhausted to prometheus:
       + ping_service_success_cnt
       + ping_service_error_cnt
+
+  NOTE: pod IP address is 172.17.0.11
+  
+  $curl http://172.17.0.11:2112/metrics | grep ping
+  # HELP ping_service_error_cnt The total number of unsuccessful service pings
+  # TYPE ping_service_error_cnt counter
+  ping_service_error_cnt 7
+  # HELP ping_service_success_cnt The total number of successful service pings
+  # TYPE ping_service_success_cnt counter
+  ping_service_success_cnt 284
 
 ## Other URLs
   - Add csv URLs to env.value in ping-service.yaml to test other URLs
