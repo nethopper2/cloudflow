@@ -1,7 +1,8 @@
 A Kubernetes deployment that provides a list of cluster URLs and loops through them reporting thier status.
 
 # Build
-docker build -t nethopper/ping-service \.
+docker build -t nethopper/ping-service .
+
 docker push nethopper/ping-service:latest
 
 ### unit test
