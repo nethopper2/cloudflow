@@ -31,10 +31,15 @@ kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-ser
   
   $curl http://172.17.0.11:2112/metrics | grep ping
   \# HELP ping_service_error_cnt The total number of unsuccessful service pings
+  
   \# TYPE ping_service_error_cnt counter
+  
   ping_service_error_cnt 7
+  
   \# HELP ping_service_success_cnt The total number of successful service pings
+  
   \# TYPE ping_service_success_cnt counter
+  
   ping_service_success_cnt 284
 
 ## Other URLs
