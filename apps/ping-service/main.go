@@ -20,7 +20,7 @@ func main() {
 	// run forver (until ^C)
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
-	<-stop // wait for ^C
+	<-stop
 
 	log.Println("Terminating ...")
 }
