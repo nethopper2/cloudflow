@@ -1,12 +1,11 @@
-A Kubernetes deployment that continually pings a list of URLs and exhausts prometheus ok/error metrics accordingly.
+A Kubernetes deployment that pings a list of URLs every 5 seconds exhausting prometheus ok/error metrics accordingly.
 
 The deployment manifest for the application is: github.com/nethopper2/cloudflow/manifests/ping-service/ping-service.yaml.
 
-Default URL in application manifest is for the frontend service (cloudflow/manifests/demoapp/frontend).
+Default test URL in application manifest is for the frontend service (cloudflow/manifests/demoapp/frontend).
 
 # Build
 docker build -t nethopper/ping-service .
-
 docker push nethopper/ping-service:latest
 
 ## unit test in docker
@@ -16,12 +15,11 @@ docker run --rm --env PING_URLS=https://google.com nethopper/ping-service
 kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-service.yaml
 
 # Demo
-  - Deploy ping-service
+  - Deploy https://github.com/nethopper2/cloudflow/tree/master/manifests/demoapp/frontend
 
 ## view in pod logs
-  - Observe errors pinging frontend service
-  - Deploy https://github.com/nethopper2/cloudflow/tree/master/manifests/demoapp/frontend
-  - Observe ping successes/errors in pod logs
+  - tail pod logs
+  - Observe successes/errors pinging frontend service
 
 ## view in prometheus
   - There are two metrics exhausted to prometheus:
