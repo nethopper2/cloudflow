@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ping-service-v1
+  name: ping-service
   labels:
-    app: ping-service-v1
+    app: ping-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ping-service-v1
+      app: ping-service
   template:
     metadata:
       labels:
-        app: ping-service-v1
+        app: ping-service
     spec:
       containers:
       - name: app
@@ -20,3 +20,5 @@ spec:
         env:
           - name: PING_URLS
             value: http://frontend.default.svc.cluster.local:8080
+          - name: LISTENING_PORT
+            value: "2112"
