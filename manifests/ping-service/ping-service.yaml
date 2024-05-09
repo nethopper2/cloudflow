@@ -8,5 +8,6 @@ spec:
   selector:
     app: ping-service-v1
   ports:
-  - name: web
-    port: 8080
+  - port: 80
+    protocol: TCP
+    targetPort: 2112
