@@ -40,3 +40,43 @@ kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-ser
 # Misc
   - prometheus-service.yaml moved to cloudflow/manifests/ping-service/ping-service.yaml
 
+# Debug Notes
+  - Check Prometheus Config (this example uses the ping-service ServiceMonitor)
+      + get pod IP and curl it's metrics endpoint at port 9090
+      ```
+      $ k describe pod prometheus-<cluster-name>-observabi-prometheus-0
+      
+      $ curl http://172.17.0.7:9090/metrics
+      ```
+
+      + Verify your app is being scraped
+      ```
+      $ curl http://172.17.0.7:9090/metrics | grep ping
+      ```
+      Following output means your service has been discovered by Prometheus  
+      ```
+      prometheus_sd_discovered_targets{config="serviceMonitor/default/ping-service-servicemonitor/0",name="scrape"} 19
+      ```
+
+      Non-zero values in the following output means it's collecting metrics from your app
+      ```
+      prometheus_target_metadata_cache_bytes{scrape_job="serviceMonitor/default/ping-service-servicemonitor/0"} 1876
+      
+      prometheus_target_metadata_cache_entries{scrape_job="serviceMonitor/default/ping-service-servicemonitor/0"} 38
+      ```
+# Developer Notes
+  - Requires a Deployment, Service, and ServiceMonitor objects
+  - The http endpoint of the Service is a port in the Deployment pod which is exhausting metrics to <podip:port>/metrics
+  - The ServiceMonitor is a Prometheus CRD that enable a prometheus server to discover the Service
+  - The **release** annotation in the ServiceMonitor manifest must match the prometheus server **release** annotation in the Prometheus server ($k get prometheus -o yaml)
+  - Didn't have to do anything to view in a custom Hub Grafana dashboard
+      + New Dashboard->Add Visualization
+      + Select cluster as Data Source
+      + Add a metric in the Metric dropdown
+      + To add additional metrics, Click **+ Query" and repeat last step
+
+
+
+  
+
+
