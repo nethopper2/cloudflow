@@ -66,14 +66,14 @@ kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-ser
       ```
 # Developer Notes
   - Requires a Deployment, Service, and ServiceMonitor objects
-  - The http endpoint of the Service is a port in the Deployment pod which is exhausting metrics to <podip:port>/metrics
+  - The http endpoint of the Service is a port in the Deployment pod which is exhausting metrics to <pod-ip:port>/metrics
   - The ServiceMonitor is a Prometheus CRD that enable a prometheus server to discover the Service
   - The **release** annotation in the ServiceMonitor manifest must match the prometheus server **release** annotation in the Prometheus server ($k get prometheus -o yaml)
   - Didn't have to do anything to view in a custom Hub Grafana dashboard
       + New Dashboard->Add Visualization
       + Select cluster as Data Source
       + Add a metric in the Metric dropdown
-      + To add additional metrics, Click **+ Query" and repeat last step
+      + To add additional metrics, Click **+ Query"** and repeat last step
 
 
 
