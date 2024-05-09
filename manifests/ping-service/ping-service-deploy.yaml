@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ping-service
+  name: ping-service-v1
   labels:
-    app: ping-service
+    app: ping-service-v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ping-service
+      app: ping-service-v1
   template:
     metadata:
       labels:
-        app: ping-service
+        app: ping-service-v1
     spec:
       containers:
       - name: app

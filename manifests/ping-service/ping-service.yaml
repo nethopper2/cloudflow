@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ping-service
+  labels:
+    app: ping-service-v1
+spec:
+  selector:
+    app: ping-service-v1
+  ports:
+  - name: web
+    port: 8080
