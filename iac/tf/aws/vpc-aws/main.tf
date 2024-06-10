@@ -7,7 +7,7 @@ provider "aws" {
 terraform {
   backend "kubernetes" {
     secret_suffix     = "providerconfig-default"
-    namespace         = "nethopper"
+    namespace         = "default"
     in_cluster_config = true
   }
 }
@@ -15,6 +15,6 @@ resource "aws_vpc" "main" {
  cidr_block = "10.0.0.0/16"
  
  tags = {
-   Name = "xplane-tf-demo-vpc"
+   Name = "TF Provider for xplane-tf-demo-vpc"
  }
 }
