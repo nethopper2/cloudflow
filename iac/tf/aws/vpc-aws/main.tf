@@ -1,5 +1,5 @@
 provider "aws" {
-  shared_credentials_file = "aws-creds.ini"
+  shared_credentials_files = ["aws-creds.ini"]
   region = "us-east-2"
 }
 
@@ -12,7 +12,7 @@ terraform {
   }
 }
 resource "aws_vpc" "main" {
- cidr = "10.0.0.0/16"
+ cidr_block = "10.0.0.0/16"
  
  tags = {
    Name = "xplane-tf-demo-vpc"
