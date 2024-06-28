@@ -43,6 +43,7 @@ kubectl apply -f github.com/nethopper2/cloudflow/manifests/ping-service/ping-ser
 # Debug Notes
   - Check Prometheus Config (this example uses the ping-service ServiceMonitor)
       + get pod IP and curl it's metrics endpoint at port 9090
+      + **NOTE**: Can be done from agent pod for clusters w/o public ip 
       ```
       $ k describe pod prometheus-<cluster-name>-observabi-prometheus-0
       
