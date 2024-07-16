@@ -6,7 +6,7 @@ metadata:
   # namespace: default
   labels:
     app: ping-service
-    release: onprem-baremetal-observability-edge
+    release: aws-eks-west-observability-edge
 spec:
   selector:
     matchLabels:
