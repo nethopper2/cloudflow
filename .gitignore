@@ -43,3 +43,8 @@ secrets.*
 node_modules
 package.json
 package-lock.json
+
+# Terraform
+.terraform*
+*.tfvars
+*.tfstate*

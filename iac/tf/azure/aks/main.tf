@@ -1,51 +1,3 @@
-# Configure the Azure provider
-variable "client_secret" {
-  type = string
-  description = "azure client secret for the appropriate service principle below"
-  default = "abcde"
-}
-
-variable "region" {
-  type = string
-  description = "Azure region"
-  default = "eastus"
-}
-
-variable "cluster-name-suffix" {
-  description = "Cluster name suffix"
-  type        = string
-  default     = "aks"
-}
-
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.48.0"
-    }
-  }
-
-  required_version = ">= 1.1.0"
-}
-
-// Modules _must_ use remote state. The provider does not persist state.
-// NOTE: This is for keeping state in CrossPlane in a K8s cluster.
-terraform {
-  backend "kubernetes" {
-    secret_suffix     = "providerconfig-default"
-    namespace         = "default"
-    in_cluster_config = true
-  }
-}
-
-provider "azurerm" {
-  features {}
-  client_id = "40872f6d-74b1-4f0c-a560-7d754d8fd3dd"
-  tenant_id = "6cea5d02-bfe1-4887-89f4-1dae00a54c60"
-  subscription_id = "b471e439-04ca-42fe-af9c-a2eedb46cdfa"
-  client_secret = var.client_secret
-}
-
 resource "azurerm_resource_group" "rg" {
   name     = "rg-cloudflow-${var.cluster-name-suffix}"
   location = var.region
@@ -72,14 +24,73 @@ resource "azurerm_kubernetes_cluster" "example" {
   }
 }
 
-output "client_certificate" {
-  value     = azurerm_kubernetes_cluster.example.kube_config.0.client_certificate
-  sensitive = true
+
+data "kubernetes_resource" "nethopper-config" {
+  api_version = "v1"
+  kind        = "Secret"
+
+  metadata {
+    name      = "nethopper-config"
+    namespace = "${var.agent_namespace}"
+  }
 }
 
-output "kube_config" {
-  value = azurerm_kubernetes_cluster.example.kube_config_raw
+data "http" "create-cluster" {
+  url = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_URL)}"
+  method = "POST"
+  request_headers = {
+    apikey = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_KEY)}"
+    content-type = "application/json"
+  }
 
-  sensitive = true
+  request_body = "{\"query\":\"mutation CreateCluster($args:CreateClusterInput!){\\ncreateCluster(args:$args){\\nid\\n}\\n}\",\"variables\":{\"args\":{\"name\":\"cloudflow-${var.cluster-name-suffix}\",\"k8sDistro\":\"AKS\",\"systemType\":\"KUBERNETES\",\"clusterRole\":\"EDGE\",\"namespace\":\"default\"}}}"
 }
 
+data "http" "attach-cluster-to-network" {
+  url = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_URL)}"
+  method = "POST"
+  request_headers = {
+    apikey = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_KEY)}"
+    content-type = "application/json"
+  }
+
+  request_body = "{\"query\":\"mutation AttachCluster($args:AttachClusterInput!){\\nattachCluster(args:$args){\\ncluster{\\nid\\n}\\n}\\n}\",\"variables\":{\"args\":{\"clusterId\":\"${jsondecode(data.http.create-cluster.response_body).data.createCluster.id}\",\"networkId\":\"${base64decode(data.kubernetes_resource.nethopper-config.object.data.NETWORK_ID)}\"}}}"
+}
+
+data "http" "create-agent" {
+  depends_on = [ data.http.attach-cluster-to-network ]
+
+  url = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_URL)}"
+  method = "POST"
+  request_headers = {
+    apikey = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_KEY)}"
+    content-type = "application/json"
+  }
+
+  request_body = "{\"query\":\"mutation CreateAgent($args:CreateAgentInput!){\\ncreateAgent(args:$args){\\nid\\n}\\n}\",\"variables\":{\"args\":{\"clusterId\":\"${jsondecode(data.http.create-cluster.response_body).data.createCluster.id}\",\"networkId\":\"${base64decode(data.kubernetes_resource.nethopper-config.object.data.NETWORK_ID)}\"}}}"
+}
+
+data "http" "create-install-object" {
+  url = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_URL)}"
+  method = "POST"
+  request_headers = {
+    apikey = "${base64decode(data.kubernetes_resource.nethopper-config.object.data.API_KEY)}"
+    content-type = "application/json"
+  }
+
+  request_body = "{\"query\":\"mutation CreateInstallObject($args:CreateAgentInstallObjectInput!){\\ncreateInstallObject(args:$args)\\n}\",\"variables\":{\"args\":{\"agentId\":\"${jsondecode(data.http.create-agent.response_body).data.createAgent.id}\"}}}"
+}
+
+data "curl" "get-nethopper-agent-manifest" {
+  http_method = "GET"
+  uri = "${replace(base64decode(data.kubernetes_resource.nethopper-config.object.data.API_URL), "graphql", "install")}/${jsondecode(data.http.create-install-object.response_body).data.createInstallObject}"
+}
+
+data "kubectl_file_documents" "docs" {
+    content = data.curl.get-nethopper-agent-manifest.response
+}
+
+resource "kubectl_manifest" "nethopper-agent" {
+  for_each  = data.kubectl_file_documents.docs.manifests
+  yaml_body = each.value
+}
