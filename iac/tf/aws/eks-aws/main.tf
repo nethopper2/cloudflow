@@ -17,7 +17,7 @@ provider "kubernetes" {
 terraform {
   backend "kubernetes" {
     secret_suffix     = "providerconfig-default"
-    namespace         = "kaops"
+    namespace         = "nethopper"
     in_cluster_config = true
   }
 }
