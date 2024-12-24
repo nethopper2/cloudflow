@@ -20,7 +20,7 @@ spec:
         lifecycle:
           postStart:
             exec:
-              command: ["ollama", "run", "gemma2:2b"]
+              command: ["ollama", "run", "gemma2:9b"]
         ports:
         - containerPort: 11434
         resources:
