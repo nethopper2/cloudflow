@@ -6,7 +6,9 @@ metadata:
   name: open-webui-pvc
   namespace: open-webui
 spec:
-  accessModes: ["ReadWriteOnce"]
+  storageClassName: gp2
+  accessModes: 
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 10Gi
