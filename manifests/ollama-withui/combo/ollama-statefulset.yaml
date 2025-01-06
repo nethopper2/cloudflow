@@ -39,6 +39,7 @@ spec:
   - metadata:
       name: ollama-volume
     spec:
+      storageClassName: gp2
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
