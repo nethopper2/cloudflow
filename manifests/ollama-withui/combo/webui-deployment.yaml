@@ -4,7 +4,8 @@ metadata:
   name: open-webui-deployment
   namespace: open-webui
   annotations:
-    argocd.argoproj.io/sync-wave: "1"spec:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
   replicas: 1
   selector:
     matchLabels:
