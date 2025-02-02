@@ -34,7 +34,6 @@ resource "random_id" "suffix" {
 
 // Modules _must_ use remote state. The provider does not persist state.
 // NOTE: This is for keeping state in CrossPlane in a K8s cluster.
-
 terraform {
   backend "kubernetes" {
     secret_suffix     = "providerconfig-default"
@@ -42,7 +41,6 @@ terraform {
     in_cluster_config = true
   }
 }
-
 
 provider "azurerm" {
   features {}
@@ -78,6 +76,17 @@ resource "azurerm_kubernetes_cluster" "example" {
     //SkipGPUDriverInstall = true
   }
 
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "example" {
+  name                  = "gpu"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.example.id
+  vm_size               = "Standard_NC4as_T4_v3"
+  node_count            = 1
+  node_labels = { "NodePool" = "gpu" }
+  node_taints = ["sku=gpu:NoSchedule"]
+  mode        = "User"
+  depends_on = [azurerm_kubernetes_cluster.example]
 }
 
 output "client_certificate" {
