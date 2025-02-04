@@ -539,7 +539,7 @@ operator:
     key: node-role.kubernetes.io/control-plane
     operator: Equal
     value: ""
-  upgradeCRD: true
+  upgradeCRD: false
   use_ocp_driver_toolkit: false
 platform:
   openshift: false
