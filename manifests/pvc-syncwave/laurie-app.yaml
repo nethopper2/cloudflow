@@ -69,7 +69,7 @@ metadata:
 spec:
   ttlSecondsAfterFinished: 10
   template:
-    spec:
+    spe:
       volumes:
       - name: laurie-storage
         persistentVolumeClaim:
