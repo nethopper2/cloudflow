@@ -79,7 +79,7 @@ spec:
           claimName: laurie-pvc
       containers:
       - name: ubuntu
-        image: ubuntu:lates
+        image: ubuntu:latest
         #command: [ "/bin/bash", "-c", "--" ] #working command
         command: [ "/bin/bas", "-c", "--" ] #broken command
         #args: [ "while true; do timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; sleep 5; done;" ]
