@@ -52,8 +52,8 @@ spec:
       - name: ubuntu
         image: ubuntu:latest
         command: [ "/bin/bash", "-c", "--" ]
-        #args: [ "while true; do timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; sleep 5; done;" ]
-        args: [ "timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; cat /mount/data/file.txt" ]
+        args: [ "xyz timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; cat /mount/data/file.txt" ] #broken command
+        #args: [ "timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; cat /mount/data/file.txt" ] #working command
         volumeMounts:
         - mountPath: /mount/data
           name: laurie-storage
