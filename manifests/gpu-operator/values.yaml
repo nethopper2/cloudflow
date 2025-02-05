@@ -56,7 +56,7 @@ dcgmExporter:
 devicePlugin:
   args: []
   config:
-    create: false
+    create: true
     data: {}
     default: ""
     name: ""
@@ -116,7 +116,7 @@ driver:
   nvidiaDriverCRD:
     deployDefaultCR: true
     driverType: gpu
-    enabled: false
+    enabled: true
     nodeSelector: {}
   rdma:
     enabled: false
