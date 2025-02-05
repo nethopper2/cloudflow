@@ -4,6 +4,7 @@ kind: PersistentVolume
 metadata:
   annotations:
     #argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/hook: PreSync
   name: laurie-pv
   namespace: laurie
   labels:
