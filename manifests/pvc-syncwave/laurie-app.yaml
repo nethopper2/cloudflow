@@ -79,7 +79,7 @@ spec:
         command: [ "/bin/bash", "-c", "--" ]
         #args: [ "while true; do timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; sleep 5; done;" ]
         args: [ "cat /mount/data/file.txt; while true; do sleep 5; done;" ] #working command
-        args: [ "xyz; cat /mount/data/file.txt; while true; do sleep 5; done;" ] #broken command
+        #args: [ "xyz; cat /mount/data/file.txt; while true; do sleep 5; done;" ] #broken command
         volumeMounts:
         - mountPath: /mount/data
           name: laurie-storage
