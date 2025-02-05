@@ -69,14 +69,14 @@ metadata:
 spec:
   ttlSecondsAfterFinished: 10
   template:
-    spe:
+    spec:
       volumes:
       - name: laurie-storage
         persistentVolumeClaim:
           claimName: laurie-pvc
       containers:
       - name: ubuntu
-        image: ubuntu:latest
+        image: ubuntu:lates
         #command: [ "/bin/bash", "-c", "--" ] #working command
         command: [ "/bin/bas", "-c", "--" ] #broken command
         #args: [ "while true; do timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; sleep 5; done;" ]
