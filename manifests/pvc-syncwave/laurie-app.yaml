@@ -57,7 +57,7 @@ spec:
         - mountPath: /mount/data
           name: laurie-storage
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 1
 ---
 apiVersion: batch/v1
 kind: Job
@@ -67,6 +67,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
+  ttlSecondsAfterFinished: 10
   template:
     spec:
       volumes:
@@ -76,14 +77,14 @@ spec:
       containers:
       - name: ubuntu
         image: ubuntu:latest
-        command: [ "/bin/bash", "-c", "--" ]
+        command: [ "/bin/bash", "-c", "--" ] #working command
+        #command: [ "/bin/bas", "-c", "--" ] #broken command
         #args: [ "while true; do timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; sleep 5; done;" ]
         #args: [ "cat /mount/data/file.txt; while true; do sleep 5; done;" ] #working loop command
-        #args: [ "cat /mount/data/file.txt" ] #working command
-        args: [ "xyz; cat /mount/data/file.txt;" ] #broken command
+        args: [ "cat /mount/data/file.txt" ] #working command
         volumeMounts:
         - mountPath: /mount/data
           name: laurie-storage
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 1
 
