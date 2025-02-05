@@ -53,7 +53,7 @@ spec:
         image: ubuntu:latest
         command: [ "/bin/bash", "-c", "--" ]
         #args: [ "while true; do timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; sleep 5; done;" ]
-        args: [ "timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt;" ]
+        args: [ "timestamp=$(date +%H:%M:%S); echo $timestamp; echo $timestamp > /mount/data/file.txt;" ]
         volumeMounts:
         - mountPath: /mount/data
           name: laurie-storage
