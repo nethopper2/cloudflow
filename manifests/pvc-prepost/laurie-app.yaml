@@ -3,10 +3,10 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "-2"
     #argocd.argoproj.io/hook: PreSync
   name: laurie-pv
-  namespace: laurie
+#  namespace: laurie
   labels:
     type: local
 spec:
@@ -24,8 +24,8 @@ metadata:
   name: laurie-pvc
   namespace: laurie
   annotations:
-    #argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-1"
+    #argocd.argoproj.io/hook: PreSync
 spec:
   accessModes:
     - ReadWriteOnce
@@ -42,7 +42,7 @@ metadata:
   name: laurie-job-w2
   namespace: laurie
   annotations:
-    #argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "0"
     argocd.argoproj.io/hook: PreSync
 spec:
   template:
@@ -66,9 +66,9 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: laurie-job-w3
-  namespace: lauriex
+  namespace: laurie
   annotations:
-    #argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "0"
     argocd.argoproj.io/hook: PostSync
 spec:
   ttlSecondsAfterFinished: 10
