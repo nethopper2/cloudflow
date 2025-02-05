@@ -37,7 +37,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: laurie-job
+  name: laurie-job-w2
   namespace: laurie
   annotations:
     argocd.argoproj.io/sync-wave: "2"
@@ -60,24 +60,15 @@ spec:
       restartPolicy: Never
   backoffLimit: 4
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: laurie-dep
+  name: laurie-job-w3
   namespace: laurie
-  labels:
-    app: laurie
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: laurie
   template:
-    metadata:
-      labels:
-        app: laurie
     spec:
       volumes:
       - name: laurie-storage
@@ -88,8 +79,10 @@ spec:
         image: ubuntu:latest
         command: [ "/bin/bash", "-c", "--" ]
         #args: [ "while true; do timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt; sleep 5; done;" ]
-        #args: [ "timestamp=$(date +%H:%M:%S); echo $timestamp > /mount/data/file.txt;" ]
         args: [ "cat /mount/data/file.txt; while true; do sleep 5; done;" ]
         volumeMounts:
         - mountPath: /mount/data
           name: laurie-storage
+      restartPolicy: Never
+  backoffLimit: 4
+
