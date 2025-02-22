@@ -21,7 +21,7 @@ spec:
         image: ghcr.io/open-webui/open-webui:ollama
         #command: ["bash","curl https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png > /app/backend/open_webui/static/nh-favicon.png && cp /app/backend/open_webui/static/nh-favicon.png /app/backend/open_webui/static/favicon.png && start.sh"]
         command: [ "/bin/bash", "-c", "--" ]
-        args: [ "apt update && apt install wget -y && wget https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png && cp nh-favicon-96x96.png /app/backend/open_webui/static/favicon.png && start.sh"]
+        args: [ "apt update && apt install wget -y && wget https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png && cp nh-favicon-96x96.png /app/backend/open_webui/static/favicon.png && ./start.sh"]
         #command: [ "/bin/bash", "-c", "--" ]
         #args: [ "while true; do sleep 30; done;" ]
         ports:
