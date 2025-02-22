@@ -40,20 +40,20 @@ spec:
         volumeMounts:
         - name: webui-volume
           mountPath: /app/backend/data
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 3
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 3
+        #livenessProbe:
+        #  httpGet:
+        #    path: /
+        #    port: 8080
+        #  initialDelaySeconds: 30
+        #  periodSeconds: 10
+        #  timeoutSeconds: 3
+        #readinessProbe:
+        #  httpGet:
+        #    path: /
+        #    port: 8080
+        #  initialDelaySeconds: 30
+        #  periodSeconds: 10
+        #  timeoutSeconds: 3
 
       volumes:
       - name: webui-volume
