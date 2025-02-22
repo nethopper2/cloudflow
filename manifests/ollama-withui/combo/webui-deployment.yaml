@@ -19,7 +19,8 @@ spec:
       containers:
       - name: open-webui
         image: ghcr.io/open-webui/open-webui:ollama
-        command: ["bash","-c","curl https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png > /app/backend/open_webui/static/nh-favicon.png && cp /app/backend/open_webui/static/nh-favicon.png /app/backend/open_webui/static/favicon.png && start.sh"]
+        #command: ["bash","curl https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png > /app/backend/open_webui/static/nh-favicon.png && cp /app/backend/open_webui/static/nh-favicon.png /app/backend/open_webui/static/favicon.png && start.sh"]
+        command: ["bash","curl https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png > /app/backend/open_webui/static/nh-favicon.png && cp /app/backend/open_webui/static/nh-favicon.png /app/backend/open_webui/static/favicon.png"]
         ports:
         - containerPort: 8080
         resources:
