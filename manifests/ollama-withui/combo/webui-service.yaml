@@ -12,7 +12,8 @@ spec:
       port: 8080
       targetPort: 8080
       # If using NodePort, you can optionally specify the nodePort:
-      nodePort: 30111
+      name: HTTP
     - protocol: TCP
       port: 443
       targetPort: 443
+      name: HTTPS
