@@ -1,0 +1,5 @@
+region = "us-east-2"
+cluster-name = "eks-hub"
+k8s-version = "1.29"
+aws-cli-profile = "nh-prod"
+instance-type = "m5.xlarge"
