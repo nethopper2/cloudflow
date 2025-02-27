@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: open-webui
-        image: ghcr.io/open-webui/open-webui:ollama
+        image: ghcr.io/open-webui/open-webui:latest
         #command: ["bash","curl https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png > /app/backend/open_webui/static/nh-favicon.png && cp /app/backend/open_webui/static/nh-favicon.png /app/backend/open_webui/static/favicon.png && start.sh"]
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "./start.sh & sleep 10 && apt update && apt install wget -y && wget https://raw.githubusercontent.com/nethopper2/infra-gitops/refs/heads/main/demo/users/chris/nh-favicon-96x96.png && cp /app/backend/nh-favicon-96x96.png /app/backend/open_webui/static/favicon.png; while true; do sleep 30; done;"]
