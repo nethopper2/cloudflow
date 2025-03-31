@@ -15,8 +15,12 @@ metadata:
     # Use appropriate annotations for your Ingress controller, e.g., for NGINX:
     # nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  tls:
+    - hosts:
+        - yourgpt.mynethopper.net
+      secretName: open-webui-tls-secret
   rules:
-  - host: open-webui.minikube.local
+  - host: yourgpt.mynethopper.net
     http:
       paths:
       - path: /
