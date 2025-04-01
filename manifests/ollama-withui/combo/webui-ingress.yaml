@@ -18,7 +18,7 @@ spec:
   tls:
     - hosts:
         - yourgpt.mynethopper.net
-      secretName: open-webui-tls-secret
+      secretName: open-webui-tls-secret2
   rules:
   - host: yourgpt.mynethopper.net
     http:
