@@ -17,10 +17,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - yourgpt.mynethopper.net
+        - privategpt.mynethopper.net
       secretName: open-webui-tls-secret2
   rules:
-  - host: yourgpt.mynethopper.net
+  - host: privategpt.mynethopper.net
     http:
       paths:
       - path: /
