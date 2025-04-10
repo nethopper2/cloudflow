@@ -1,4 +1,4 @@
-## KAOPS StatefulSets demo to show how Kubernetes supports VDI (Virtual Decktop Instances)
+## KAOPS StatefulSets demo to show how Kubernetes supports VDI (Virtual Desktop Instances)
 
 ### Use the following procedure
 
