@@ -29,7 +29,7 @@ metadata:
   namespace: drbob
 spec:
   serviceName: "ubuntu"   # Refers to the headless service above.
-  replicas: 0             # Number of pods.
+  replicas: 1             # Number of pods.
   selector:
     matchLabels:
       app: ubuntu
