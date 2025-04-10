@@ -1,1 +1,70 @@
-hi
+## KAOPS StatefulSets demo to show how Kubernetes supports VDI (Virtual Decktop Instances)
+
+### Use the following procedure
+
+1. Copy the yaml below into a file called <user>.yaml
+2. replace all "drbob" with the name of your user
+
+```bash
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: drbob
+  labels:
+    name: drbob
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ubuntu
+  namespace: drbob
+  labels:
+    app: ubuntu
+spec:
+  ports:
+  - port: 22
+    name: ssh
+  # Headless service: no cluster IP so that each pod gets a DNS entry.
+  #clusterIP: None
+  type: NodePort
+  selector:
+    app: ubuntu
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ubuntu-statefulset
+  namespace: drbob
+spec:
+  serviceName: "ubuntu"   # Refers to the headless service above.
+  replicas: 1             # Number of pods.
+  selector:
+    matchLabels:
+      app: ubuntu
+  template:
+    metadata:
+#    namespace: drbob
+      labels:
+        app: ubuntu
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: ubuntu
+        image: ubuntu:20.04
+        command: [ "/bin/bash", "-c", "--" ] #working command
+        args: [ "echo 'root' | sh -c 'echo 'root:root' | chpasswd' && apt-get update && apt-get install -y openssh-server && echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config &&
+ mkdir -p /run/sshd && /usr/sbin/sshd -D; while true; do sleep 5; done;" ] #working loop command
+        # The container runs indefinitely.
+        volumeMounts:
+        - name: ubuntu-data
+          mountPath: /data  # Mounting the persistent storage.
+  volumeClaimTemplates:
+  - metadata:
+      name: ubuntu-data  # This name is referenced in volumeMounts.
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: standard  # Ensure that this matches your cluster's StorageClass.
+      resources:
+        requests:
+          storage: 1Mi
+```
