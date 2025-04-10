@@ -3,7 +3,9 @@
 ### Use the following procedure
 
 1. Copy the yaml below into a file called \<user\>.yaml
-2. replace all "drbob" with the name of your \<user\>
+2. Replace All "drbob" with the name of your \<user\>
+3. Save the file to this directory (cloudflow/manifests/ss-vdi)
+4. Either wait 2 minutes for KAOPS to sync with this git repo, or manually sync the app in KAOPS
 
 ```bash
 apiVersion: v1
