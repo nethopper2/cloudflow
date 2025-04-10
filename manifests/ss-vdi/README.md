@@ -2,8 +2,8 @@
 
 ### Use the following procedure
 
-1. Copy the yaml below into a file called <user>.yaml
-2. replace all "drbob" with the name of your user
+1. Copy the yaml below into a file called \<user\>.yaml
+2. replace all "drbob" with the name of your \<user\>
 
 ```bash
 apiVersion: v1
