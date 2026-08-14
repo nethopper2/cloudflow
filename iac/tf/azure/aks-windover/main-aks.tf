@@ -14,17 +14,16 @@ variable "region" {
 variable "cluster-name-suffix" {
   description = "Cluster name suffix"
   type        = string
-  default     = "aks"
+  default     = "windover-dev"
 }
 
 terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.48.0"
+      version = "~> 4.0" # Or at least >= 3.100.0
     }
   }
-
   required_version = ">= 1.1.0"
 }
 
@@ -35,38 +34,40 @@ resource "random_id" "suffix" {
 // Modules _must_ use remote state. The provider does not persist state.
 // NOTE: This is for keeping state in CrossPlane in a K8s cluster.
 
-terraform {
-  backend "kubernetes" {
-    secret_suffix     = "providerconfig-default"
-    namespace         = "default"
-    in_cluster_config = true
-  }
-}
+//terraform {
+//  backend "kubernetes" {
+//    secret_suffix     = "providerconfig-default"
+//    namespace         = "default"
+//    in_cluster_config = true
+//  }
+//}
+
+
 
 
 provider "azurerm" {
   features {}
-  client_id = "40872f6d-74b1-4f0c-a560-7d754d8fd3dd"
-  tenant_id = "6cea5d02-bfe1-4887-89f4-1dae00a54c60"
-  subscription_id = "b471e439-04ca-42fe-af9c-a2eedb46cdfa"
+  client_id = "c25b384e-db11-4832-b78a-0299eea10a61"
+  tenant_id = "6e9c22cb-0e3a-4833-ad50-1690aee81043"
+  subscription_id = "a1edaf77-9558-458a-b34b-06ab5f41b71c"
   client_secret = var.client_secret
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-cloudflow-${var.cluster-name-suffix}-${random_id.suffix.hex}"
+  name     = "rg-${var.cluster-name-suffix}-${random_id.suffix.hex}"
   location = var.region
 }
 
 resource "azurerm_kubernetes_cluster" "example" {
-  name                = "cloudflow-${var.cluster-name-suffix}-${random_id.suffix.hex}"
+  name                = "cluster-${var.cluster-name-suffix}-${random_id.suffix.hex}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = "cloudflow${var.cluster-name-suffix}-${random_id.suffix.hex}"
+  dns_prefix          = "dns-${var.cluster-name-suffix}-${random_id.suffix.hex}"
 
   default_node_pool {
     name       = "default"
     node_count = 1
-    vm_size    = "standard_B4ms"
+    vm_size    = "standard_d4as_v7"
   }
 
   identity {
